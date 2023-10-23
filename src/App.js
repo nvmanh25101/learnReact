@@ -1,54 +1,27 @@
-import { useMemo, useRef, useState } from 'react'
-import Content from './Content.js'
+import { useReducer } from 'react'
 
-function App() {
-  const [name, setName] = useState('')
-  const [price, setPrice] = useState('')
-  const [products, setProducts] = useState([])
+const initState = 0
+const UP_ACTION = 'up'
+const DOWN_ACTION = 'down'
 
-  const nameRef = useRef()
-
-  const handleSubmit = () => {
-    setProducts([...products, {
-      name,
-      price: +price,
-    }])
-    setName('')
-    setPrice('')
-    nameRef.current.focus()
+const reducer = (state, action) => {
+  switch(action){
+    case UP_ACTION:
+      return state + 1
+    case DOWN_ACTION:
+      return state - 1
+    default:
+      return 'Invalid action'
   }
+}
+function App() {
+  const [count, dispatch] = useReducer(reducer, initState)
 
-  const total = useMemo(() => {
-    const result = products.reduce((sum, product) => {
-      return sum + product.price
-    }, 0)
-
-    return result
-  }, [products])
- 
   return (
     <div style={{padding: 20}}>
-      <input 
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        ref={nameRef}
-        placeholder='Name'
-      ></input>
-      <br />
-      <input
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        placeholder='Price'
-      ></input>
-      <br />
-      <button onClick={handleSubmit}>Add</button>
-      <br />
-      Total: {total}
-      <ul>
-        {products.map((product, index) => (
-          <li key={index}>{product.name} - {product.price}</li>
-        ))}
-      </ul>
+      <h1>{count}</h1>
+      <button onClick={() => dispatch(DOWN_ACTION)}>Down</button>
+      <button onClick={() => dispatch(UP_ACTION)}>Up</button>
     </div>
   );
 }
