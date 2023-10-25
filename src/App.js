@@ -1,5 +1,7 @@
 import { useRef } from "react";
 import Video from "./Video.js";
+import Button from "./components/Button/index.js";
+import GlobalStyle from "./components/GlobalStyles"
 
 function App() {
 	const videoRef = useRef()
@@ -13,12 +15,13 @@ function App() {
 	}
 
   	return (
-		<div style={{padding: 20}}>
-			<Video ref={videoRef} /> { //nhận từ callback useImperativeHandle 
-			}
-			<button onClick={handlePlay}>Play</button>
-			<button onClick={handlePause}>Pause</button>
-		</div>
+		<GlobalStyle >
+			<div style={{padding: 20}}>
+				<Video ref={videoRef} /> { //nhận từ callback useImperativeHandle 
+				}
+				<Button handle={{handlePlay, handlePause}}  />
+			</div>
+		</GlobalStyle>
   )
 }
 
